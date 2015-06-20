@@ -10,4 +10,8 @@ I have examples that show the CarouselView used as:
 - A gallery-style control with **dots** as page indicators
 - A full-page control with **tabs** as page indicators
 
-<img height="500" hspace="auto" src="https://github.com/chrisriesgo/xamarin-forms-carouselview/blob/master/Images/carousel_view.gif" />
+<style>
+img.aligncenter {display: block; margin-left: auto; margin-right: auto;}
+</style>
+
+<img class="aligncenter" height="500" src="https://github.com/chrisriesgo/xamarin-forms-carouselview/blob/master/Images/carousel_view.gif" />
