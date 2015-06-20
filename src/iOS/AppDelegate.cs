@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
+﻿
 using Foundation;
 using UIKit;
 
@@ -13,11 +10,6 @@ namespace CustomLayouts.iOS
 		public override bool FinishedLaunching(UIApplication app, NSDictionary options)
 		{
 			global::Xamarin.Forms.Forms.Init();
-
-			// Code for starting up the Xamarin Test Cloud Agent
-			#if ENABLE_TEST_CLOUD
-			Xamarin.Calabash.Start();
-			#endif
 
 			LoadApplication(new App());
 

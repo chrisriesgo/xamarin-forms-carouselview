@@ -1,16 +1,11 @@
-﻿using System;
-
+﻿
 using Android.App;
-using Android.Content;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
 
 namespace CustomLayouts.Droid
 {
-	[Activity(Label = "CustomLayouts.Droid", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+	[Activity(Label = "CarouselView Demo", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
 	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity
 	{
 		protected override void OnCreate(Bundle bundle)
