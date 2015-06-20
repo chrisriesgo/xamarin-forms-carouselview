@@ -9,34 +9,34 @@ namespace CustomLayouts.ViewModels
 	{
 		public SwitcherPageViewModel()
 		{
-			CurrentSessions = new List<HomeViewModel>() {
+			Pages = new List<HomeViewModel>() {
 				new HomeViewModel { Title = "1", Background = Color.White, ImageSource = "icon.png" },
 				new HomeViewModel { Title = "2", Background = Color.Red, ImageSource = "icon.png" },
 				new HomeViewModel { Title = "3", Background = Color.Blue, ImageSource = "icon.png" },
 				new HomeViewModel { Title = "4", Background = Color.Yellow, ImageSource = "icon.png" },
 			};
 
-			CurrentSession = CurrentSessions.First();
+			CurrentPage = Pages.First();
 		}
 
-		IEnumerable<HomeViewModel> _currentSessions;
-		public IEnumerable<HomeViewModel> CurrentSessions {
+		IEnumerable<HomeViewModel> _pages;
+		public IEnumerable<HomeViewModel> Pages {
 			get {
-				return _currentSessions;
+				return _pages;
 			}
 			set {
-				SetObservableProperty (ref _currentSessions, value);
-				CurrentSession = CurrentSessions.FirstOrDefault ();
+				SetObservableProperty (ref _pages, value);
+				CurrentPage = Pages.FirstOrDefault ();
 			}
 		}
 
-		HomeViewModel _currentSession;
-		public HomeViewModel CurrentSession {
+		HomeViewModel _currentPage;
+		public HomeViewModel CurrentPage {
 			get {
-				return _currentSession;
+				return _currentPage;
 			}
 			set {
-				SetObservableProperty (ref _currentSession, value);
+				SetObservableProperty (ref _currentPage, value);
 			}
 		}
 	}

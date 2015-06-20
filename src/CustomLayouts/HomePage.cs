@@ -33,15 +33,14 @@ namespace CustomLayouts
 				VerticalOptions = LayoutOptions.FillAndExpand
 			};
 
-			var currentSessionsCarousel = CreateCurrentSessionsCarousel();
+			var pagesCarousel = CreatePagesCarousel();
 			var dots = CreatePagerIndicatorContainer();
-//			_tabs = CreateTabsContainer();
 			_tabs = CreateTabs();
 
-			switch(currentSessionsCarousel.IndicatorStyle)
+			switch(pagesCarousel.IndicatorStyle)
 			{
 				case CarouselLayout.IndicatorStyleEnum.Dots:
-					relativeLayout.Children.Add (currentSessionsCarousel,
+					relativeLayout.Children.Add (pagesCarousel,
 						Constraint.RelativeToParent ((parent) => { return parent.X; }),
 						Constraint.RelativeToParent ((parent) => { return parent.Y; }),
 						Constraint.RelativeToParent ((parent) => { return parent.Width; }),
@@ -50,7 +49,7 @@ namespace CustomLayouts
 
 					relativeLayout.Children.Add (dots, 
 						Constraint.Constant (0),
-						Constraint.RelativeToView (currentSessionsCarousel, 
+						Constraint.RelativeToView (pagesCarousel, 
 							(parent,sibling) => { return sibling.Height - 18; }),
 						Constraint.RelativeToParent (parent => parent.Width),
 						Constraint.Constant (18)
@@ -65,7 +64,7 @@ namespace CustomLayouts
 						Constraint.Constant (tabsHeight)
 					);
 
-					relativeLayout.Children.Add (currentSessionsCarousel,
+					relativeLayout.Children.Add (pagesCarousel,
 						Constraint.RelativeToParent ((parent) => { return parent.X; }),
 						Constraint.RelativeToParent ((parent) => { return parent.Y; }),
 						Constraint.RelativeToParent ((parent) => { return parent.Width; }),
@@ -73,7 +72,7 @@ namespace CustomLayouts
 					);
 					break;
 				default:
-					relativeLayout.Children.Add (currentSessionsCarousel,
+					relativeLayout.Children.Add (pagesCarousel,
 						Constraint.RelativeToParent ((parent) => { return parent.X; }),
 						Constraint.RelativeToParent ((parent) => { return parent.Y; }),
 						Constraint.RelativeToParent ((parent) => { return parent.Width; }),
@@ -85,7 +84,7 @@ namespace CustomLayouts
 			Content = relativeLayout;
 		}
 
-		CarouselLayout CreateCurrentSessionsCarousel ()
+		CarouselLayout CreatePagesCarousel ()
 		{
 			var carousel = new CarouselLayout {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
@@ -93,8 +92,8 @@ namespace CustomLayouts
 				IndicatorStyle = _indicatorStyle,
 				ItemTemplate = new DataTemplate(typeof(HomeView))
 			};
-			carousel.SetBinding(CarouselLayout.ItemsSourceProperty, "CurrentSessions");
-			carousel.SetBinding(CarouselLayout.SelectedItemProperty, "CurrentSession", BindingMode.TwoWay);
+			carousel.SetBinding(CarouselLayout.ItemsSourceProperty, "Pages");
+			carousel.SetBinding(CarouselLayout.SelectedItemProperty, "CurrentPage", BindingMode.TwoWay);
 
 			return carousel;
 		}
@@ -109,8 +108,8 @@ namespace CustomLayouts
 		View CreatePagerIndicators()
 		{
 			var pagerIndicator = new PagerIndicatorDots() { DotSize = 5, DotColor = Color.Black };
-			pagerIndicator.SetBinding (PagerIndicatorDots.ItemsSourceProperty, "CurrentSessions");
-			pagerIndicator.SetBinding (PagerIndicatorDots.SelectedItemProperty, "CurrentSession");
+			pagerIndicator.SetBinding (PagerIndicatorDots.ItemsSourceProperty, "Pages");
+			pagerIndicator.SetBinding (PagerIndicatorDots.SelectedItemProperty, "CurrentPage");
 			return pagerIndicator;
 		}
 
@@ -125,55 +124,11 @@ namespace CustomLayouts
 		{
 			var pagerIndicator = new PagerIndicatorTabs() { HorizontalOptions = LayoutOptions.CenterAndExpand };
 			pagerIndicator.RowDefinitions.Add(new RowDefinition() { Height = 50 });
-			pagerIndicator.SetBinding(PagerIndicatorTabs.ColumnDefinitionsProperty, "CurrentSessions", BindingMode.Default, new SpacingConverter());
-			pagerIndicator.SetBinding (PagerIndicatorTabs.ItemsSourceProperty, "CurrentSessions");
-			pagerIndicator.SetBinding (PagerIndicatorTabs.SelectedItemProperty, "CurrentSession");
-
-//			grid.Children.Add(new StackLayout {
-//				Orientation = StackOrientation.Vertical,
-//				HorizontalOptions = LayoutOptions.Center,
-//				Padding = new Thickness(5),
-//				Children = {
-//					new Image { Source = "icon.png", HeightRequest = 20 },
-//					new Label { Text = "Tab One", FontSize = 11 }
-//				}
-//			}, 0, 0);
-//			grid.Children.Add(new StackLayout {
-//				Orientation = StackOrientation.Vertical,
-//				HorizontalOptions = LayoutOptions.Center,
-//				Padding = new Thickness(5),
-//				Children = {
-//					new Image { Source = "icon.png", HeightRequest = 20 },
-//					new Label { Text = "Tab Two", FontSize = 11 }
-//				}
-//			}, 1, 0);
-//			grid.Children.Add(new StackLayout {
-//				Orientation = StackOrientation.Vertical,
-//				HorizontalOptions = LayoutOptions.Center,
-//				Padding = new Thickness(5),
-//				Children = {
-//					new Image { Source = "icon.png", HeightRequest = 20 },
-//					new Label { Text = "Tab Three", FontSize = 11 }
-//				}
-//			}, 2, 0);
-//			grid.Children.Add(new StackLayout {
-//				Orientation = StackOrientation.Vertical,
-//				HorizontalOptions = LayoutOptions.Center,
-//				Padding = new Thickness(5),
-//				Children = {
-//					new Image { Source = "icon.png", HeightRequest = 20 },
-//					new Label { Text = "Tab Four", FontSize = 11 }
-//				}
-//			}, 3, 0);
+			pagerIndicator.SetBinding(PagerIndicatorTabs.ColumnDefinitionsProperty, "Pages", BindingMode.Default, new SpacingConverter());
+			pagerIndicator.SetBinding (PagerIndicatorTabs.ItemsSourceProperty, "Pages");
+			pagerIndicator.SetBinding (PagerIndicatorTabs.SelectedItemProperty, "CurrentPage");
 
 			return pagerIndicator;
-
-//			var pagerIndicator = new PagerIndicatorDots() { DotSize = 10, DotColor = Color.White, Spacing = 0, HorizontalOptions = LayoutOptions.FillAndExpand };
-//
-//			pagerIndicator.SetBinding (PagerIndicatorDots.ItemsSourceProperty, "CurrentSessions");
-//			pagerIndicator.SetBinding (PagerIndicatorDots.SelectedItemProperty, "CurrentSession");
-//
-//			return pagerIndicator;
 		}
 	}
 
@@ -194,110 +149,6 @@ namespace CustomLayouts
 		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{
 			throw new NotImplementedException();
-		}
-	}
-
-	public class PipSet : StackLayout
-	{
-		int _selectedIndex;
-
-		public PipSet ()
-		{
-			Orientation = StackOrientation.Horizontal;
-			HorizontalOptions = LayoutOptions.Center;
-			Spacing = 4;
-		}
-
-		public static BindableProperty ItemsSourceProperty =
-			BindableProperty.Create<PipSet, IList> (
-				pips => pips.ItemsSource,
-				null,
-				BindingMode.OneWay,
-				propertyChanging: (bindable, oldValue, newValue) => {
-				((PipSet)bindable).ItemsSourceChanging ();
-			},
-				propertyChanged: (bindable, oldValue, newValue) => {
-				((PipSet)bindable).ItemsSourceChanged ();
-			}
-			);
-
-		public IList ItemsSource {
-			get {
-				return (IList)GetValue(ItemsSourceProperty);
-			}
-			set {
-				SetValue (ItemsSourceProperty, value);
-			}
-		}
-
-		public static BindableProperty SelectedItemProperty =
-			BindableProperty.Create<PipSet, object> (
-				pips => pips.SelectedItem,
-				null,
-				BindingMode.TwoWay,
-				propertyChanged: (bindable, oldValue, newValue) => {
-				((PipSet)bindable).SelectedItemChanged ();
-			});
-
-		public object SelectedItem {
-			get {
-				return GetValue (SelectedItemProperty);
-			}
-			set {
-				SetValue (SelectedItemProperty, value);
-			}
-		}
-
-		void ItemsSourceChanging ()
-		{
-			if (ItemsSource != null)
-				_selectedIndex = ItemsSource.IndexOf (SelectedItem);
-		}
-
-		void ItemsSourceChanged ()
-		{
-			if (ItemsSource == null) return;
-
-			var countDelta = ItemsSource.Count - Children.Count;
-
-			if (countDelta > 0) {
-				for (var i = 0; i < countDelta; i++) {
-					Children.Add (CreatePip ());
-				}
-			} else if (countDelta < 0) {
-				for (var i = 0; i < -countDelta; i++) {
-					Children.RemoveAt (0);
-				}
-			}
-
-			//            if (_selectedIndex >= 0 && _selectedIndex < ItemsSource.Count)
-			//                SelectedItem = ItemsSource [_selectedIndex];
-
-			//            UpdateSelection ();
-		}
-
-		void SelectedItemChanged () {
-			var selectedIndex = ItemsSource.IndexOf (SelectedItem);
-			var pips = Children.Cast<Image> ().ToList ();
-
-			foreach (var pip in pips) UnselectPip (pip);
-
-			if (selectedIndex > -1) SelectPip (pips [selectedIndex]);
-		}
-
-		static View CreatePip ()
-		{
-			return new Image { Source = "pip.png" };
-		}
-
-		static void UnselectPip (Image pip)
-		{
-			pip.Source = "pip.png";
-		}
-
-		static void SelectPip (Image pip)
-		{
-			pip.Source = "pip_selected.png";
 		}
 	}
 }

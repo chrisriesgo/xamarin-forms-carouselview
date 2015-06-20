@@ -40,8 +40,6 @@ namespace CustomLayouts
 
 		void CreateTabs()
 		{
-			var w = this.ParentView.ParentView.Width;
-
 			foreach(var item in ItemsSource)
 			{
 				var tab = item as ITabProvider;
