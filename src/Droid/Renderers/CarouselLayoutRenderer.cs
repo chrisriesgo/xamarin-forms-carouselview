@@ -9,7 +9,6 @@ using System.ComponentModel;
 using Android.Graphics;
 using CustomLayouts.Controls;
 using CustomLayouts.Droid.Renderers;
-using Android.Support.V4.View;
 
 [assembly:ExportRenderer(typeof(CarouselLayout), typeof(CarouselLayoutRenderer))]
 
@@ -25,8 +24,6 @@ namespace CustomLayouts.Droid.Renderers
 
 		protected override void OnElementChanged (VisualElementChangedEventArgs e)
 		{
-			var a = new ViewPager(this.Context);
-			var b = a.ClipBounds;
 			base.OnElementChanged (e);
 			if(e.NewElement == null) return;
 
