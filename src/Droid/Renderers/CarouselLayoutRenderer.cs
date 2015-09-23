@@ -114,5 +114,14 @@ namespace CustomLayouts.Droid.Renderers
 			var carouselLayout = (CarouselLayout)this.Element;
 			_scrollView.ScrollTo (carouselLayout.SelectedIndex * Width, 0);
 		}
+
+		protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
+		{
+			if(_initialized && (w != oldw))
+			{
+				_initialized = false;
+			}
+			base.OnSizeChanged(w, h, oldw, oldh);
+		}
 	}
 }
