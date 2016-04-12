@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using Xamarin.Forms;
+using Plugin.Settings;
 
 namespace CustomLayouts.Controls
 {
@@ -21,13 +22,17 @@ namespace CustomLayouts.Controls
 
 		int _selectedIndex;
 
-		public CarouselLayout ()
-		{
-			Orientation = ScrollOrientation.Horizontal;
+        bool IsVertical = CrossSettings.Current.GetValueOrDefault("IsVertical", false);
 
-			_stack = new StackLayout {
-				Orientation = StackOrientation.Horizontal,
-				Spacing = 0
+        public CarouselLayout ()
+		{
+            ScrollOrientation scrollOrientation = IsVertical ? ScrollOrientation.Vertical : ScrollOrientation.Horizontal;
+            StackOrientation stackOrientation = IsVertical ? StackOrientation.Vertical : StackOrientation.Horizontal;
+            Orientation = scrollOrientation;
+
+            _stack = new StackLayout {
+                Orientation = stackOrientation,
+                Spacing = 0
 			};
 
 			Content = _stack;
@@ -55,8 +60,14 @@ namespace CustomLayouts.Controls
 			if (_layingOutChildren) return;
 
 			_layingOutChildren = true;
-			foreach (var child in Children) child.WidthRequest = width;
-			_layingOutChildren = false;
+            foreach (var child in Children)
+            {
+                child.WidthRequest = width;
+
+                if (IsVertical)
+                    child.HeightRequest = height;
+            }
+            _layingOutChildren = false;
 		}
 
 		public static readonly BindableProperty SelectedIndexProperty =
