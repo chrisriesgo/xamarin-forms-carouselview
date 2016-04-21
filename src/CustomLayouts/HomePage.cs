@@ -2,19 +2,21 @@
 using Xamarin.Forms;
 using CustomLayouts.Controls;
 using CustomLayouts.ViewModels;
+using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace CustomLayouts
 {
-    public class HomePage : ContentPage
-    {
-        View _tabs;
+	public class HomePage : ContentPage
+	{
+		View _tabs;
 
-        RelativeLayout relativeLayout;
+		RelativeLayout relativeLayout;
 
-        CarouselLayout.IndicatorStyleEnum _indicatorStyle;
+		CarouselLayout.IndicatorStyleEnum _indicatorStyle;
 
-        SwitcherPageViewModel viewModel;
+		SwitcherPageViewModel viewModel;
 
         ScrollOrientation _scrollOrienation;
 
@@ -25,137 +27,134 @@ namespace CustomLayouts
             _scrollOrienation = scrollOrientation;
 
             viewModel = new SwitcherPageViewModel();
-            BindingContext = viewModel;
+			BindingContext = viewModel;
 
-            Title = _indicatorStyle.ToString();
+			Title = _indicatorStyle.ToString();
 
-            relativeLayout = new RelativeLayout
-            {
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand
-            };
+			relativeLayout = new RelativeLayout 
+			{
+				HorizontalOptions = LayoutOptions.FillAndExpand,
+				VerticalOptions = LayoutOptions.FillAndExpand
+			};
 
-            var pagesCarousel = CreatePagesCarousel();
-            var dots = CreatePagerIndicatorContainer();
-            _tabs = CreateTabs();
+			var pagesCarousel = CreatePagesCarousel();
+			var dots = CreatePagerIndicatorContainer();
+			_tabs = CreateTabs();
 
-            switch (pagesCarousel.IndicatorStyle)
-            {
-                case CarouselLayout.IndicatorStyleEnum.Dots:
-                    bool IsVertical = pagesCarousel.Orientation == ScrollOrientation.Vertical;
-                    relativeLayout.Children.Add(pagesCarousel,
-                        Constraint.RelativeToParent((parent) => { return parent.X; }),
-                        Constraint.RelativeToParent((parent) => { return parent.Y; }),
-                        Constraint.RelativeToParent((parent) => { return parent.Width; }),
+			switch(pagesCarousel.IndicatorStyle)
+			{
+				case CarouselLayout.IndicatorStyleEnum.Dots:
+					relativeLayout.Children.Add (pagesCarousel,
+						Constraint.RelativeToParent ((parent) => { return parent.X; }),
+						Constraint.RelativeToParent ((parent) => { return parent.Y; }),
+						Constraint.RelativeToParent ((parent) => { return parent.Width; }),
                         Constraint.RelativeToParent((parent) => { return _scrollOrienation == ScrollOrientation.Vertical ? parent.Height : parent.Height / 2; })
                     );
 
-                    relativeLayout.Children.Add(dots,
-                        Constraint.Constant(0),
-                        Constraint.RelativeToView(pagesCarousel,
-                            (parent, sibling) => { return sibling.Height - 18; }),
-                        Constraint.RelativeToParent(parent => parent.Width),
-                        Constraint.Constant(18)
-                    );
-                    break;
-                case CarouselLayout.IndicatorStyleEnum.Tabs:
-                    var tabsHeight = 50;
-                    relativeLayout.Children.Add(_tabs,
-                        Constraint.Constant(0),
-                        Constraint.RelativeToParent((parent) => { return parent.Height - tabsHeight; }),
-                        Constraint.RelativeToParent(parent => parent.Width),
-                        Constraint.Constant(tabsHeight)
-                    );
+					relativeLayout.Children.Add (dots, 
+						Constraint.Constant (0),
+						Constraint.RelativeToView (pagesCarousel, 
+							(parent,sibling) => { return sibling.Height - 18; }),
+						Constraint.RelativeToParent (parent => parent.Width),
+						Constraint.Constant (18)
+					);
+					break;
+				case CarouselLayout.IndicatorStyleEnum.Tabs:
+					var tabsHeight = 50;
+					relativeLayout.Children.Add (_tabs, 
+						Constraint.Constant (0),
+						Constraint.RelativeToParent ((parent) => { return parent.Height - tabsHeight; }),
+						Constraint.RelativeToParent (parent => parent.Width),
+						Constraint.Constant (tabsHeight)
+					);
 
-                    relativeLayout.Children.Add(pagesCarousel,
-                        Constraint.RelativeToParent((parent) => { return parent.X; }),
-                        Constraint.RelativeToParent((parent) => { return parent.Y; }),
-                        Constraint.RelativeToParent((parent) => { return parent.Width; }),
-                        Constraint.RelativeToView(_tabs, (parent, sibling) => { return parent.Height - (sibling.Height); })
-                    );
-                    break;
-                default:
-                    relativeLayout.Children.Add(pagesCarousel,
-                        Constraint.RelativeToParent((parent) => { return parent.X; }),
-                        Constraint.RelativeToParent((parent) => { return parent.Y; }),
-                        Constraint.RelativeToParent((parent) => { return parent.Width; }),
-                        Constraint.RelativeToParent((parent) => { return parent.Height; })
-                    );
-                    break;
-            }
+					relativeLayout.Children.Add (pagesCarousel,
+						Constraint.RelativeToParent ((parent) => { return parent.X; }),
+						Constraint.RelativeToParent ((parent) => { return parent.Y; }),
+						Constraint.RelativeToParent ((parent) => { return parent.Width; }),
+						Constraint.RelativeToView (_tabs, (parent, sibling) => { return parent.Height - (sibling.Height); })
+					);
+					break;
+				default:
+					relativeLayout.Children.Add (pagesCarousel,
+						Constraint.RelativeToParent ((parent) => { return parent.X; }),
+						Constraint.RelativeToParent ((parent) => { return parent.Y; }),
+						Constraint.RelativeToParent ((parent) => { return parent.Width; }),
+						Constraint.RelativeToParent ((parent) => { return parent.Height; })
+					);
+					break;
+			}
 
-            Content = relativeLayout;
-        }
+			Content = relativeLayout;
+		}
 
-        CarouselLayout CreatePagesCarousel()
-        {
-            var carousel = new CarouselLayout(_scrollOrienation)
+		CarouselLayout CreatePagesCarousel ()
+		{
+			var carousel = new CarouselLayout(_scrollOrienation)
             {
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                IndicatorStyle = _indicatorStyle,
-                ItemTemplate = new DataTemplate(typeof(HomeView))
-            };
-            carousel.SetBinding(CarouselLayout.ItemsSourceProperty, "Pages");
-            carousel.SetBinding(CarouselLayout.SelectedItemProperty, "CurrentPage", BindingMode.TwoWay);
+				HorizontalOptions = LayoutOptions.FillAndExpand,
+				VerticalOptions = LayoutOptions.FillAndExpand,
+				IndicatorStyle = _indicatorStyle,
+				ItemTemplate = new DataTemplate(typeof(HomeView))
+			};
+			carousel.SetBinding(CarouselLayout.ItemsSourceProperty, "Pages");
+			carousel.SetBinding(CarouselLayout.SelectedItemProperty, "CurrentPage", BindingMode.TwoWay);
 
-            return carousel;
-        }
+			return carousel;
+		}
 
-        View CreatePagerIndicatorContainer()
-        {
-            return new StackLayout
-            {
-                Children = { CreatePagerIndicators() }
-            };
-        }
+		View CreatePagerIndicatorContainer()
+		{
+			return new StackLayout {
+				Children = { CreatePagerIndicators() }
+			};
+		}
 
-        View CreatePagerIndicators()
-        {
-            var pagerIndicator = new PagerIndicatorDots() { DotSize = 5, DotColor = Color.Black };
-            pagerIndicator.SetBinding(PagerIndicatorDots.ItemsSourceProperty, "Pages");
-            pagerIndicator.SetBinding(PagerIndicatorDots.SelectedItemProperty, "CurrentPage");
-            return pagerIndicator;
-        }
+		View CreatePagerIndicators()
+		{
+			var pagerIndicator = new PagerIndicatorDots() { DotSize = 5, DotColor = Color.Black };
+			pagerIndicator.SetBinding (PagerIndicatorDots.ItemsSourceProperty, "Pages");
+			pagerIndicator.SetBinding (PagerIndicatorDots.SelectedItemProperty, "CurrentPage");
+			return pagerIndicator;
+		}
 
-        View CreateTabsContainer()
-        {
-            return new StackLayout
-            {
-                Children = { CreateTabs() }
-            };
-        }
+		View CreateTabsContainer()
+		{
+			return new StackLayout {
+				Children = { CreateTabs() }
+			};
+		}
 
-        View CreateTabs()
-        {
-            var pagerIndicator = new PagerIndicatorTabs() { HorizontalOptions = LayoutOptions.CenterAndExpand };
-            pagerIndicator.RowDefinitions.Add(new RowDefinition() { Height = 50 });
-            pagerIndicator.SetBinding(PagerIndicatorTabs.ColumnDefinitionsProperty, "Pages", BindingMode.Default, new SpacingConverter());
-            pagerIndicator.SetBinding(PagerIndicatorTabs.ItemsSourceProperty, "Pages");
-            pagerIndicator.SetBinding(PagerIndicatorTabs.SelectedItemProperty, "CurrentPage");
+		View CreateTabs()
+		{
+			var pagerIndicator = new PagerIndicatorTabs() { HorizontalOptions = LayoutOptions.CenterAndExpand };
+			pagerIndicator.RowDefinitions.Add(new RowDefinition() { Height = 50 });
+			pagerIndicator.SetBinding(PagerIndicatorTabs.ColumnDefinitionsProperty, "Pages", BindingMode.Default, new SpacingConverter());
+			pagerIndicator.SetBinding (PagerIndicatorTabs.ItemsSourceProperty, "Pages");
+			pagerIndicator.SetBinding (PagerIndicatorTabs.SelectedItemProperty, "CurrentPage");
 
-            return pagerIndicator;
-        }
-    }
+			return pagerIndicator;
+		}
+	}
 
-    public class SpacingConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            var items = value as IEnumerable<HomeViewModel>;
+	public class SpacingConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			var items = value as IEnumerable<HomeViewModel>;
 
-            var collection = new ColumnDefinitionCollection();
-            foreach (var item in items)
-            {
-                collection.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-            }
-            return collection;
-        }
+			var collection = new ColumnDefinitionCollection();
+			foreach(var item in items)
+			{
+				collection.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+			}
+			return collection;
+		}
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
+		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }
 

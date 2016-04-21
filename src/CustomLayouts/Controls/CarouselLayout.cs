@@ -21,13 +21,13 @@ namespace CustomLayouts.Controls
 
 		int _selectedIndex;
 
-		public CarouselLayout (ScrollOrientation scrollOrientation)
-		{
+        public CarouselLayout(ScrollOrientation scrollOrientation)
+        {
             Orientation = scrollOrientation;
 
-			_stack = new StackLayout {
-				Orientation = Orientation == ScrollOrientation.Horizontal ? StackOrientation.Horizontal : StackOrientation.Vertical,
-				Spacing = 0
+            _stack = new StackLayout {
+                Orientation = Orientation == ScrollOrientation.Horizontal ? StackOrientation.Horizontal : StackOrientation.Vertical,
+                Spacing = 0
 			};
 
 			Content = _stack;

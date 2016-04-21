@@ -1,5 +1,6 @@
 ﻿using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
+using System.Reflection;
 using Java.Lang;
 using System.Timers;
 using Android.Widget;
@@ -8,14 +9,12 @@ using System.ComponentModel;
 using Android.Graphics;
 using CustomLayouts.Controls;
 using CustomLayouts.Droid.Renderers;
-using System.Reflection;
 
-[assembly: ExportRenderer(typeof(CarouselLayout), typeof(CarouselLayoutRenderer))]
+[assembly:ExportRenderer(typeof(CarouselLayout), typeof(CarouselLayoutRenderer))]
 
 namespace CustomLayouts.Droid.Renderers
 {
-    public class CarouselLayoutRenderer : ScrollViewRenderer
-    {
+	public class CarouselLayoutRenderer : ScrollViewRenderer {
         int _prevScroll;
         int _delta;
         bool _motionDown;
@@ -25,27 +24,24 @@ namespace CustomLayouts.Droid.Renderers
         HorizontalScrollView _scrollView;
         bool _isVertical;
 
-        protected override void OnElementChanged(VisualElementChangedEventArgs e)
-        {
-            base.OnElementChanged(e);
-            if (e.NewElement == null)
-                return;
+        protected override void OnElementChanged (VisualElementChangedEventArgs e)
+		{
+			base.OnElementChanged (e);
+			if(e.NewElement == null) return;
 
             _deltaResetTimer = new Timer(100) { AutoReset = false };
             _deltaResetTimer.Elapsed += (object sender, ElapsedEventArgs args) => _delta = 0;
 
-            _scrollStopTimer = new Timer(200) { AutoReset = false };
-            _scrollStopTimer.Elapsed += (object sender, ElapsedEventArgs args2) => UpdateSelectedIndex();
+			_scrollStopTimer = new Timer (200) { AutoReset = false };
+			_scrollStopTimer.Elapsed += (object sender, ElapsedEventArgs args2) => UpdateSelectedIndex ();
 
             _isVertical = (((CarouselLayout)Element).Orientation == ScrollOrientation.Vertical);
 
             e.NewElement.PropertyChanged += ElementPropertyChanged;
-        }
+		}
 
-        void ElementPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "Renderer")
-            {
+		void ElementPropertyChanged(object sender, PropertyChangedEventArgs e) {
+			if (e.PropertyName == "Renderer") {
                 if (_isVertical)
                 {
                     _verticalScrollView = this;
@@ -61,20 +57,18 @@ namespace CustomLayouts.Droid.Renderers
                     _scrollView.Touch += ScrollViewTouch;
                 }
             }
-            if (e.PropertyName == CarouselLayout.SelectedIndexProperty.PropertyName && !_motionDown)
-            {
-                ScrollToIndex(((CarouselLayout)this.Element).SelectedIndex);
-            }
-        }
+            if (e.PropertyName == CarouselLayout.SelectedIndexProperty.PropertyName && !_motionDown) {
+				ScrollToIndex (((CarouselLayout)this.Element).SelectedIndex);
+			}
+		}
 
-        void ScrollViewTouch(object sender, TouchEventArgs e)
-        {
-            e.Handled = false;
+		void ScrollViewTouch (object sender, TouchEventArgs e)
+		{
+			e.Handled = false;
 
-            switch (e.Event.Action)
-            {
-                case MotionEventActions.Move:
-                    _deltaResetTimer.Stop();
+			switch (e.Event.Action) {
+				case MotionEventActions.Move:
+					_deltaResetTimer.Stop ();
                     if (_isVertical)
                     {
                         _delta = _verticalScrollView.ScrollY - _prevScroll;
@@ -88,22 +82,21 @@ namespace CustomLayouts.Droid.Renderers
 
                     UpdateSelectedIndex();
 
-                    _deltaResetTimer.Start();
-                    break;
-                case MotionEventActions.Down:
-                    _motionDown = true;
-                    _scrollStopTimer.Stop();
-                    break;
-                case MotionEventActions.Up:
-                    _motionDown = false;
-                    SnapScroll();
-                    _scrollStopTimer.Start();
-                    break;
-            }
-        }
+					_deltaResetTimer.Start ();
+					break;
+				case MotionEventActions.Down:
+					_motionDown = true;
+					_scrollStopTimer.Stop ();
+					break;
+				case MotionEventActions.Up:
+					_motionDown = false;
+					SnapScroll ();
+					_scrollStopTimer.Start ();
+					break;
+			}
+		}
 
-        void UpdateSelectedIndex()
-        {
+		void UpdateSelectedIndex () {
             var carouselLayout = (CarouselLayout)this.Element;
             if (_isVertical)
             {
@@ -117,8 +110,8 @@ namespace CustomLayouts.Droid.Renderers
             }
         }
 
-        void SnapScroll()
-        {
+        void SnapScroll ()
+		{
             var roughIndex = 0.0;
 
             if (_isVertical)
@@ -132,10 +125,10 @@ namespace CustomLayouts.Droid.Renderers
                 : Math.Round(roughIndex);
 
             ScrollToIndex((int)targetIndex);
-        }
+		}
 
-        void ScrollToIndex(int targetIndex)
-        {
+		void ScrollToIndex (int targetIndex)
+		{
             if (_isVertical)
             {
                 var target = targetIndex * _verticalScrollView.Height;
@@ -155,15 +148,12 @@ namespace CustomLayouts.Droid.Renderers
         }
 
         bool _initialized = false;
-        public override void Draw(Canvas canvas)
-        {
-            base.Draw(canvas);
-
-            if (_initialized)
-                return;
-
-            _initialized = true;
-            var carouselLayout = (CarouselLayout)this.Element;
+		public override void Draw (Canvas canvas)
+		{
+			base.Draw (canvas);
+			if (_initialized) return;
+			_initialized = true;
+			var carouselLayout = (CarouselLayout)this.Element;
             if (_isVertical)
                 _verticalScrollView.ScrollTo(0, carouselLayout.SelectedIndex * Height);
             else
@@ -171,12 +161,12 @@ namespace CustomLayouts.Droid.Renderers
         }
 
         protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
-        {
-            if (_initialized && (w != oldw))
-            {
-                _initialized = false;
-            }
-            base.OnSizeChanged(w, h, oldw, oldh);
-        }
-    }
+		{
+			if(_initialized && (w != oldw))
+			{
+				_initialized = false;
+			}
+			base.OnSizeChanged(w, h, oldw, oldh);
+		}
+	}
 }
