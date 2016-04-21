@@ -18,9 +18,13 @@ namespace CustomLayouts
 
 		SwitcherPageViewModel viewModel;
 
-		public HomePage(CarouselLayout.IndicatorStyleEnum indicatorStyle)
+		ScrollOrientation _scrollOrienation;
+
+		public HomePage(CarouselLayout.IndicatorStyleEnum indicatorStyle, ScrollOrientation scrollOrientation)
 		{
 			_indicatorStyle = indicatorStyle;
+
+			_scrollOrienation = scrollOrientation;
 
 			viewModel = new SwitcherPageViewModel();
 			BindingContext = viewModel;
@@ -44,7 +48,7 @@ namespace CustomLayouts
 						Constraint.RelativeToParent ((parent) => { return parent.X; }),
 						Constraint.RelativeToParent ((parent) => { return parent.Y; }),
 						Constraint.RelativeToParent ((parent) => { return parent.Width; }),
-						Constraint.RelativeToParent ((parent) => { return parent.Height/2; })
+						Constraint.RelativeToParent((parent) => { return _scrollOrienation == ScrollOrientation.Vertical ? parent.Height : parent.Height / 2; })
 					);
 
 					relativeLayout.Children.Add (dots, 
@@ -86,7 +90,8 @@ namespace CustomLayouts
 
 		CarouselLayout CreatePagesCarousel ()
 		{
-			var carousel = new CarouselLayout {
+			var carousel = new CarouselLayout(_scrollOrienation)
+			{
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				IndicatorStyle = _indicatorStyle,
