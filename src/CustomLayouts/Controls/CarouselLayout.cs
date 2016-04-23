@@ -21,7 +21,7 @@ namespace CustomLayouts.Controls
 
 		int _selectedIndex;
 
-		public CarouselLayout (ScrollOrientation scrollOrientation)
+		public CarouselLayout (ScrollOrientation scrollOrientation = ScrollOrientation.Horizontal)
 		{
 			Orientation = scrollOrientation;
 
