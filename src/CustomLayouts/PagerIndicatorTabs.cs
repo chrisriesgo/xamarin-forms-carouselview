@@ -112,6 +112,12 @@ namespace CustomLayouts
 		{
 			if (ItemsSource == null) return;
 
+			this.ColumnDefinitions.Clear();
+			foreach(var item in ItemsSource)
+			{
+				this.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+			}
+
 			CreateTabs();
 		}
 
