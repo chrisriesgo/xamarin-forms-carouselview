@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Timers;
 using Xamarin.Forms;
 
 namespace CustomLayouts.Controls
@@ -17,7 +16,6 @@ namespace CustomLayouts.Controls
 		}
 
 		readonly StackLayout _stack;
-		Timer _selectedItemTimer;
 
 		int _selectedIndex;
 
@@ -31,13 +29,6 @@ namespace CustomLayouts.Controls
 			};
 
 			Content = _stack;
-
-			_selectedItemTimer = new Timer {
-				AutoReset = false,
-				Interval = 300
-			};
-
-			_selectedItemTimer.Elapsed += SelectedItemTimerElapsed;
 		}
 
 		public IndicatorStyleEnum IndicatorStyle { get; set; }
@@ -80,12 +71,10 @@ namespace CustomLayouts.Controls
 
 		void UpdateSelectedItem ()
 		{
-			_selectedItemTimer.Stop ();
-			_selectedItemTimer.Start ();
-		}
-
-		void SelectedItemTimerElapsed (object sender, ElapsedEventArgs e) {
-			SelectedItem = SelectedIndex > -1 ? Children [SelectedIndex].BindingContext : null;
+			Device.StartTimer (TimeSpan.FromMilliseconds (300), () => {
+				SelectedItem = SelectedIndex > -1 ? Children [SelectedIndex].BindingContext : null;
+				return false;
+			});
 		}
 
 		public static readonly BindableProperty ItemsSourceProperty =
