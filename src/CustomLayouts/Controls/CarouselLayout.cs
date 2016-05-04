@@ -21,12 +21,12 @@ namespace CustomLayouts.Controls
 
 		int _selectedIndex;
 
-		public CarouselLayout ()
+		public CarouselLayout (ScrollOrientation scrollOrientation = ScrollOrientation.Horizontal)
 		{
-			Orientation = ScrollOrientation.Horizontal;
+			Orientation = scrollOrientation;
 
 			_stack = new StackLayout {
-				Orientation = StackOrientation.Horizontal,
+				Orientation = Orientation == ScrollOrientation.Horizontal ? StackOrientation.Horizontal : StackOrientation.Vertical,
 				Spacing = 0
 			};
 
@@ -55,7 +55,13 @@ namespace CustomLayouts.Controls
 			if (_layingOutChildren) return;
 
 			_layingOutChildren = true;
-			foreach (var child in Children) child.WidthRequest = width;
+			foreach (var child in Children)
+			{
+				child.WidthRequest = width;
+
+				if (Orientation == ScrollOrientation.Vertical)
+					child.HeightRequest = height;
+			}
 			_layingOutChildren = false;
 		}
 
