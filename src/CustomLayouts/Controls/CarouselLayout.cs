@@ -59,17 +59,14 @@ namespace CustomLayouts.Controls
 			_layingOutChildren = false;
 		}
 
-		public static readonly BindableProperty SelectedIndexProperty =
-			BindableProperty.Create<CarouselLayout, int> (
-				carousel => carousel.SelectedIndex,
-				0,
-				BindingMode.TwoWay,
-				propertyChanged: (bindable, oldValue, newValue) => {
-				((CarouselLayout)bindable).UpdateSelectedItem ();
-			}
-			);
+        public static readonly BindableProperty SelectedIndexProperty =
+            BindableProperty.Create("SelectedIndex", typeof(int), typeof(CarouselLayout), 0, BindingMode.TwoWay,
+                propertyChanged: (bindable, oldValue, newValue) => {
+                    ((CarouselLayout)bindable).UpdateSelectedItem();
+                }
+            );
 
-		public int SelectedIndex {
+        public int SelectedIndex {
 			get {
 				return (int)GetValue (SelectedIndexProperty);
 			}
@@ -88,19 +85,17 @@ namespace CustomLayouts.Controls
 			SelectedItem = SelectedIndex > -1 ? Children [SelectedIndex].BindingContext : null;
 		}
 
-		public static readonly BindableProperty ItemsSourceProperty =
-			BindableProperty.Create<CarouselLayout, IList> (
-				view => view.ItemsSource,
-				null,
-				propertyChanging: (bindableObject, oldValue, newValue) => {
-				((CarouselLayout)bindableObject).ItemsSourceChanging ();
-			},
-				propertyChanged: (bindableObject, oldValue, newValue) => {
-				((CarouselLayout)bindableObject).ItemsSourceChanged ();
-			}
-			);
+        public static readonly BindableProperty ItemsSourceProperty =
+            BindableProperty.Create("ItemsSource", typeof(IList), typeof(CarouselLayout), null,
+                propertyChanging: (bindableObject, oldValue, newValue) => {
+                    ((CarouselLayout)bindableObject).ItemsSourceChanging();
+                },
+                propertyChanged: (bindableObject, oldValue, newValue) => {
+                    ((CarouselLayout)bindableObject).ItemsSourceChanged();
+                }
+            );
 
-		public IList ItemsSource {
+        public IList ItemsSource {
 			get {
 				return (IList)GetValue (ItemsSourceProperty);
 			}
@@ -134,17 +129,14 @@ namespace CustomLayouts.Controls
 			set;
 		}
 
-		public static readonly BindableProperty SelectedItemProperty = 
-			BindableProperty.Create<CarouselLayout, object> (
-				view => view.SelectedItem,
-				null,
-				BindingMode.TwoWay,
-				propertyChanged: (bindable, oldValue, newValue) => {
-				((CarouselLayout)bindable).UpdateSelectedIndex ();
-			}
-			);
+        public static readonly BindableProperty SelectedItemProperty =
+            BindableProperty.Create("SelectedItem", typeof(object), typeof(CarouselLayout), null, BindingMode.TwoWay,
+                propertyChanged: (bindable, oldValue, newValue) => {
+                    ((CarouselLayout)bindable).UpdateSelectedIndex();
+                }
+            );
 
-		public object SelectedItem {
+        public object SelectedItem {
 			get {
 				return GetValue (SelectedItemProperty);
 			}
