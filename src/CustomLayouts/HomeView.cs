@@ -10,7 +10,7 @@ namespace CustomLayouts
 			BackgroundColor = Color.White;
 
 			var label = new Label {
-				XAlign = TextAlignment.Center,
+				HorizontalTextAlignment = TextAlignment.Center,
 				TextColor = Color.Black
 			};
 

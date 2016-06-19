@@ -13,17 +13,17 @@ namespace CustomLayouts
 			var none = new Button {
 				HorizontalOptions = LayoutOptions.Center,
 				Text = "No pager indicator",
-				Command = new Command((obj) => Navigation.PushAsync(new HomePage(CarouselLayout.IndicatorStyleEnum.None)))
+				Command = new Command(async (obj) => await Navigation.PushAsync(new HomePage(CarouselLayout.IndicatorStyleEnum.None)))
 			};
 			var dots = new Button {
 				HorizontalOptions = LayoutOptions.Center,
 				Text = "Dots",
-				Command = new Command((obj) => Navigation.PushAsync(new HomePage(CarouselLayout.IndicatorStyleEnum.Dots)))
+				Command = new Command(async (obj) => await Navigation.PushAsync(new HomePage(CarouselLayout.IndicatorStyleEnum.Dots)))
 			};
 			var tabs = new Button {
 				HorizontalOptions = LayoutOptions.Center,
 				Text = "Tabs",
-				Command = new Command((obj) => Navigation.PushAsync(new HomePage(CarouselLayout.IndicatorStyleEnum.Tabs)))
+				Command = new Command(async (obj) => await Navigation.PushAsync(new HomePage(CarouselLayout.IndicatorStyleEnum.Tabs)))
 			};
 			Content = new StackLayout {
 				Orientation = StackOrientation.Vertical,

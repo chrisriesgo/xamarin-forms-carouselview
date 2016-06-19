@@ -39,7 +39,7 @@ namespace CustomLayouts.Droid.Renderers
 		void ElementPropertyChanged(object sender, PropertyChangedEventArgs e) {
 			if (e.PropertyName == "Renderer") {
 				_scrollView = (HorizontalScrollView)typeof(ScrollViewRenderer)
-					.GetField ("hScrollView", BindingFlags.NonPublic | BindingFlags.Instance)
+					.GetField ("_hScrollView", BindingFlags.NonPublic | BindingFlags.Instance)
 					.GetValue (this);
 
 				_scrollView.HorizontalScrollBarEnabled = false;
