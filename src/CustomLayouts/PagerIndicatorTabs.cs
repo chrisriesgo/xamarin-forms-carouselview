@@ -8,7 +8,6 @@ namespace CustomLayouts
 {
 	public class PagerIndicatorTabs : Grid
 	{
-		int dotCount = 1;
 		int _selectedIndex;
 
 		public Color DotColor { get; set; }
@@ -63,16 +62,20 @@ namespace CustomLayouts
 		}
 
 		public static BindableProperty ItemsSourceProperty =
-			BindableProperty.Create<PagerIndicatorTabs, IList> (
-				pi => pi.ItemsSource,
+			BindableProperty.Create(
+				nameof(ItemsSource),
+				typeof(IList),
+				typeof(PagerIndicatorTabs),
 				null,
 				BindingMode.OneWay,
-				propertyChanging: (bindable, oldValue, newValue) => {
-				((PagerIndicatorTabs)bindable).ItemsSourceChanging ();
-			},
-				propertyChanged: (bindable, oldValue, newValue) => {
-				((PagerIndicatorTabs)bindable).ItemsSourceChanged ();
-			}
+				propertyChanging: (bindable, oldValue, newValue) =>
+				{
+					((PagerIndicatorTabs)bindable).ItemsSourceChanging();
+				},
+				propertyChanged: (bindable, oldValue, newValue) =>
+				{
+					((PagerIndicatorTabs)bindable).ItemsSourceChanged();
+				}
 		);
 
 		public IList ItemsSource {
@@ -85,13 +88,17 @@ namespace CustomLayouts
 		}
 
 		public static BindableProperty SelectedItemProperty =
-			BindableProperty.Create<PagerIndicatorTabs, object> (
-				pi => pi.SelectedItem,
+			BindableProperty.Create(
+				nameof(SelectedItem),
+				typeof(object),
+				typeof(PagerIndicatorTabs),
 				null,
 				BindingMode.TwoWay,
-				propertyChanged: (bindable, oldValue, newValue) => {
-				((PagerIndicatorTabs)bindable).SelectedItemChanged ();
-			});
+				propertyChanged: (bindable, oldValue, newValue) =>
+				{
+					((PagerIndicatorTabs)bindable).SelectedItemChanged();
+				}
+		);
 
 		public object SelectedItem {
 			get {

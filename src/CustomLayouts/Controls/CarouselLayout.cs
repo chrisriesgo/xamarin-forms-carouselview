@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Timers;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace CustomLayouts.Controls
 {
@@ -17,7 +17,6 @@ namespace CustomLayouts.Controls
 		}
 
 		readonly StackLayout _stack;
-		Timer _selectedItemTimer;
 
 		int _selectedIndex;
 
@@ -31,13 +30,6 @@ namespace CustomLayouts.Controls
 			};
 
 			Content = _stack;
-
-			_selectedItemTimer = new Timer {
-				AutoReset = false,
-				Interval = 300
-			};
-
-			_selectedItemTimer.Elapsed += SelectedItemTimerElapsed;
 		}
 
 		public IndicatorStyleEnum IndicatorStyle { get; set; }
@@ -60,13 +52,16 @@ namespace CustomLayouts.Controls
 		}
 
 		public static readonly BindableProperty SelectedIndexProperty =
-			BindableProperty.Create<CarouselLayout, int> (
-				carousel => carousel.SelectedIndex,
-				0,
+			BindableProperty.Create(
+				nameof(SelectedIndex), 
+				typeof(int), 
+				typeof(CarouselLayout), 
+				0, 
 				BindingMode.TwoWay,
-				propertyChanged: (bindable, oldValue, newValue) => {
-				((CarouselLayout)bindable).UpdateSelectedItem ();
-			}
+				propertyChanged: async (bindable, oldValue, newValue) =>
+				{
+					await ((CarouselLayout)bindable).UpdateSelectedItem();
+				}
 			);
 
 		public int SelectedIndex {
@@ -78,26 +73,26 @@ namespace CustomLayouts.Controls
 			}
 		}
 
-		void UpdateSelectedItem ()
+		async Task UpdateSelectedItem ()
 		{
-			_selectedItemTimer.Stop ();
-			_selectedItemTimer.Start ();
-		}
-
-		void SelectedItemTimerElapsed (object sender, ElapsedEventArgs e) {
-			SelectedItem = SelectedIndex > -1 ? Children [SelectedIndex].BindingContext : null;
+			await Task.Delay(300);
+			SelectedItem = SelectedIndex > -1 ? Children[SelectedIndex].BindingContext : null;
 		}
 
 		public static readonly BindableProperty ItemsSourceProperty =
-			BindableProperty.Create<CarouselLayout, IList> (
-				view => view.ItemsSource,
+			BindableProperty.Create(
+				nameof(ItemsSource),
+				typeof(IList),
+				typeof(CarouselLayout),
 				null,
-				propertyChanging: (bindableObject, oldValue, newValue) => {
-				((CarouselLayout)bindableObject).ItemsSourceChanging ();
-			},
-				propertyChanged: (bindableObject, oldValue, newValue) => {
-				((CarouselLayout)bindableObject).ItemsSourceChanged ();
-			}
+				propertyChanging: (bindableObject, oldValue, newValue) =>
+				{
+					((CarouselLayout)bindableObject).ItemsSourceChanging();
+				},
+				propertyChanged: (bindableObject, oldValue, newValue) =>
+				{
+					((CarouselLayout)bindableObject).ItemsSourceChanged();
+				}
 			);
 
 		public IList ItemsSource {
@@ -134,14 +129,17 @@ namespace CustomLayouts.Controls
 			set;
 		}
 
-		public static readonly BindableProperty SelectedItemProperty = 
-			BindableProperty.Create<CarouselLayout, object> (
-				view => view.SelectedItem,
+		public static readonly BindableProperty SelectedItemProperty =
+			BindableProperty.Create(
+				nameof(SelectedItem),
+				typeof(object),
+				typeof(CarouselLayout),
 				null,
 				BindingMode.TwoWay,
-				propertyChanged: (bindable, oldValue, newValue) => {
-				((CarouselLayout)bindable).UpdateSelectedIndex ();
-			}
+				propertyChanged: (bindable, oldValue, newValue) =>
+				{
+					((CarouselLayout)bindable).UpdateSelectedIndex();
+				}
 			);
 
 		public object SelectedItem {
