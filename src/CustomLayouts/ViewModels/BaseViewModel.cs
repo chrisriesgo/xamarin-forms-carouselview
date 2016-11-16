@@ -1,11 +1,8 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace CustomLayouts.ViewModels
 {
