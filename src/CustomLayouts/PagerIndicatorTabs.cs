@@ -6,153 +6,167 @@ using System.Reflection;
 
 namespace CustomLayouts
 {
-	public class PagerIndicatorTabs : Grid
-	{
-		int _selectedIndex;
+    public class PagerIndicatorTabs : Grid
+    {
+        int _selectedIndex;
 
-		public Color DotColor { get; set; }
-		public double DotSize { get; set; }
+        public Color DotColor { get; set; }
+        public double DotSize { get; set; }
 
-		public PagerIndicatorTabs()
-		{
-			HorizontalOptions = LayoutOptions.CenterAndExpand;
-			VerticalOptions = LayoutOptions.Center;
-			DotColor = Color.Black;
-			Device.OnPlatform(iOS: () => BackgroundColor = Color.Gray);
+        public PagerIndicatorTabs()
+        {
+            HorizontalOptions = LayoutOptions.CenterAndExpand;
+            VerticalOptions = LayoutOptions.Center;
+            DotColor = Color.Black;
+            switch (Device.RuntimePlatform)
+            {
+                case Device.iOS:
+                    BackgroundColor = Color.Gray;
+                    break;
+            }
 
-			var assembly = typeof(PagerIndicatorTabs).GetTypeInfo().Assembly;
-			foreach (var res in assembly.GetManifestResourceNames())
-				System.Diagnostics.Debug.WriteLine("found resource: " + res);
-		}
+            var assembly = typeof(PagerIndicatorTabs).GetTypeInfo().Assembly;
+            foreach (var res in assembly.GetManifestResourceNames())
+                System.Diagnostics.Debug.WriteLine("found resource: " + res);
+        }
 
-		void CreateTabs()
-		{
+        void CreateTabs()
+        {
 
-			if(Children != null && Children.Count > 0) Children.Clear();
+            if (Children != null && Children.Count > 0) Children.Clear();
 
-			foreach(var item in ItemsSource)
-			{
+            foreach (var item in ItemsSource)
+            {
 
-				var index = Children.Count;
-				var tab = new StackLayout {
-					Orientation = StackOrientation.Vertical,
-					HorizontalOptions = LayoutOptions.Center,
-					VerticalOptions = LayoutOptions.Center,
-					Padding = new Thickness(7),
-				};
-				Device.OnPlatform(
-					iOS: () =>
-					{
-						tab.Children.Add(new Image { Source = "pin.png", HeightRequest = 20 });
-						tab.Children.Add(new Label { Text = "Tab " + (index + 1), FontSize = 11 });
-					},					
-					Android: () =>
-					{
-						tab.Children.Add(new Image { Source = "pin.png", HeightRequest = 25 });
-					}
-				);
-				var tgr = new TapGestureRecognizer();
-				tgr.Command = new Command(() =>
-				{
-					SelectedItem = ItemsSource[index];
-				});
-				tab.GestureRecognizers.Add(tgr);
-				Children.Add(tab, index, 0);
-			}
-		}
+                var index = Children.Count;
+                var tab = new StackLayout
+                {
+                    Orientation = StackOrientation.Vertical,
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                    Padding = new Thickness(7),
+                };
+                switch (Device.RuntimePlatform)
+                {
+                    case Device.iOS:
+                        tab.Children.Add(new Image { Source = "pin.png", HeightRequest = 20 });
+                        tab.Children.Add(new Label { Text = "Tab " + (index + 1), FontSize = 11 });
+                        break;
 
-		public static BindableProperty ItemsSourceProperty =
-			BindableProperty.Create(
-				nameof(ItemsSource),
-				typeof(IList),
-				typeof(PagerIndicatorTabs),
-				null,
-				BindingMode.OneWay,
-				propertyChanging: (bindable, oldValue, newValue) =>
-				{
-					((PagerIndicatorTabs)bindable).ItemsSourceChanging();
-				},
-				propertyChanged: (bindable, oldValue, newValue) =>
-				{
-					((PagerIndicatorTabs)bindable).ItemsSourceChanged();
-				}
-		);
+                    case Device.Android:
+                        tab.Children.Add(new Image { Source = "pin.png", HeightRequest = 25 });
+                        break;
+                }
 
-		public IList ItemsSource {
-			get {
-				return (IList)GetValue(ItemsSourceProperty);
-			}
-			set {
-				SetValue (ItemsSourceProperty, value);
-			}
-		}
+                var tgr = new TapGestureRecognizer();
+                tgr.Command = new Command(() =>
+                {
+                    SelectedItem = ItemsSource[index];
+                });
+                tab.GestureRecognizers.Add(tgr);
+                Children.Add(tab, index, 0);
+            }
+        }
 
-		public static BindableProperty SelectedItemProperty =
-			BindableProperty.Create(
-				nameof(SelectedItem),
-				typeof(object),
-				typeof(PagerIndicatorTabs),
-				null,
-				BindingMode.TwoWay,
-				propertyChanged: (bindable, oldValue, newValue) =>
-				{
-					((PagerIndicatorTabs)bindable).SelectedItemChanged();
-				}
-		);
+        public static BindableProperty ItemsSourceProperty =
+            BindableProperty.Create(
+                nameof(ItemsSource),
+                typeof(IList),
+                typeof(PagerIndicatorTabs),
+                null,
+                BindingMode.OneWay,
+                propertyChanging: (bindable, oldValue, newValue) =>
+                {
+                    ((PagerIndicatorTabs)bindable).ItemsSourceChanging();
+                },
+                propertyChanged: (bindable, oldValue, newValue) =>
+                {
+                    ((PagerIndicatorTabs)bindable).ItemsSourceChanged();
+                }
+        );
 
-		public object SelectedItem {
-			get {
-				return GetValue (SelectedItemProperty);
-			}
-			set {
-				SetValue (SelectedItemProperty, value);
-			}
-		}
+        public IList ItemsSource
+        {
+            get
+            {
+                return (IList)GetValue(ItemsSourceProperty);
+            }
+            set
+            {
+                SetValue(ItemsSourceProperty, value);
+            }
+        }
 
-		void ItemsSourceChanging ()
-		{
-			if (ItemsSource != null)
-				_selectedIndex = ItemsSource.IndexOf (SelectedItem);
-		}
+        public static BindableProperty SelectedItemProperty =
+            BindableProperty.Create(
+                nameof(SelectedItem),
+                typeof(object),
+                typeof(PagerIndicatorTabs),
+                null,
+                BindingMode.TwoWay,
+                propertyChanged: (bindable, oldValue, newValue) =>
+                {
+                    ((PagerIndicatorTabs)bindable).SelectedItemChanged();
+                }
+        );
 
-		void ItemsSourceChanged ()
-		{
-			if (ItemsSource == null) return;
+        public object SelectedItem
+        {
+            get
+            {
+                return GetValue(SelectedItemProperty);
+            }
+            set
+            {
+                SetValue(SelectedItemProperty, value);
+            }
+        }
 
-			this.ColumnDefinitions.Clear();
-			foreach(var item in ItemsSource)
-			{
-				this.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-			}
+        void ItemsSourceChanging()
+        {
+            if (ItemsSource != null)
+                _selectedIndex = ItemsSource.IndexOf(SelectedItem);
+        }
 
-			CreateTabs();
-		}
+        void ItemsSourceChanged()
+        {
+            if (ItemsSource == null) return;
 
-		void SelectedItemChanged () {
+            this.ColumnDefinitions.Clear();
+            foreach (var item in ItemsSource)
+            {
+                this.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+            }
 
-			var selectedIndex = ItemsSource.IndexOf (SelectedItem);
-			var pagerIndicators = Children.Cast<StackLayout> ().ToList ();
+            CreateTabs();
+        }
 
-			foreach(var pi in pagerIndicators)
-			{
-				UnselectTab(pi);
-			}
+        void SelectedItemChanged()
+        {
 
-			if(selectedIndex > -1)
-			{
-				SelectTab(pagerIndicators[selectedIndex]);
-			}
-		}
+            var selectedIndex = ItemsSource.IndexOf(SelectedItem);
+            var pagerIndicators = Children.Cast<StackLayout>().ToList();
 
-		static void UnselectTab (StackLayout tab)
-		{
-			tab.Opacity = 0.5;
-		}
+            foreach (var pi in pagerIndicators)
+            {
+                UnselectTab(pi);
+            }
 
-		static void SelectTab (StackLayout tab)
-		{
-			tab.Opacity = 1.0;
-		}
-	}
+            if (selectedIndex > -1)
+            {
+                SelectTab(pagerIndicators[selectedIndex]);
+            }
+        }
+
+        static void UnselectTab(StackLayout tab)
+        {
+            tab.Opacity = 0.5;
+        }
+
+        static void SelectTab(StackLayout tab)
+        {
+            tab.Opacity = 1.0;
+        }
+    }
 }
 
