@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+	xmlns="http://xamarin.com/schemas/2014/forms" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+	xmlns:cv="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.CarouselView"
+	xmlns:local="clr-namespace:CarouselLayout"
+	x:Class="CarouselLayout.HomePageWithDots">
+	<ContentPage.Content>
+	
+		<RelativeLayout>
+		
+			<cv:CarouselView x:Name="CarouselItems" ItemsSource="{Binding Items}" ItemSelected="Handle_ItemSelected"
+				RelativeLayout.XConstraint =
+			      "{ConstraintExpression Type=RelativeToParent,
+			                             Property=X}"
+			    RelativeLayout.YConstraint =
+			      "{ConstraintExpression Type=RelativeToParent,
+			                             Property=Y}"
+             	RelativeLayout.WidthConstraint =
+			      "{ConstraintExpression Type=RelativeToParent,
+			                             Property=Width}"
+             	RelativeLayout.HeightConstraint =
+			      "{ConstraintExpression Type=RelativeToParent,
+			                             Property=Height,
+			                             Factor=.5}" >
+				<cv:CarouselView.ItemTemplate>
+					<DataTemplate>
+						<Grid BackgroundColor="{Binding Background}">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="*" />
+							</Grid.RowDefinitions>
+							
+							<Label Grid.Row="0" Text="{Binding Title}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+						</Grid>
+					</DataTemplate>
+				</cv:CarouselView.ItemTemplate>
+			</cv:CarouselView>
+			
+			<StackLayout 
+				RelativeLayout.XConstraint = "0"
+				RelativeLayout.YConstraint =
+					"{ConstraintExpression	Type=RelativeToView,
+											ElementName=CarouselItems,
+											Property=Height,
+											Factor=1,
+											Constant=-18}"
+				RelativeLayout.WidthConstraint =
+					"{ConstraintExpression	Type=RelativeToParent,
+											Property=Width}" 
+				RelativeLayout.HeightConstraint = "18" >
+				<local:PagerIndicatorDots DotSize="5" DotColor="Black" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" />
+			</StackLayout>
+			
+		</RelativeLayout>
+	
+	</ContentPage.Content>
+</ContentPage>
