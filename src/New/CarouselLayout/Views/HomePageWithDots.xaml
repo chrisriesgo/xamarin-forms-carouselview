@@ -36,7 +36,7 @@
 				</cv:CarouselView.ItemTemplate>
 			</cv:CarouselView>
 			
-			<StackLayout 
+			<local:PagerIndicatorDots DotSize="5" DotColor="Black" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}"
 				RelativeLayout.XConstraint = "0"
 				RelativeLayout.YConstraint =
 					"{ConstraintExpression	Type=RelativeToView,
@@ -47,9 +47,7 @@
 				RelativeLayout.WidthConstraint =
 					"{ConstraintExpression	Type=RelativeToParent,
 											Property=Width}" 
-				RelativeLayout.HeightConstraint = "18" >
-				<local:PagerIndicatorDots DotSize="5" DotColor="Black" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" />
-			</StackLayout>
+				RelativeLayout.HeightConstraint = "18" />
 			
 		</RelativeLayout>
 	
