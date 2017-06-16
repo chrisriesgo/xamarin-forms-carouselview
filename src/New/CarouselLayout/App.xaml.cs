@@ -8,7 +8,7 @@ namespace CarouselLayout
 		{
 			InitializeComponent();
 
-			MainPage = new HomePageWithDots();
+			MainPage = new NavigationPage(new SwitcherPage());
 		}
 
 		protected override void OnStart()

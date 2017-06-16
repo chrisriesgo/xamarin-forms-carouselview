@@ -35,38 +35,44 @@ namespace CarouselLayout
 
             if (Children != null && Children.Count > 0) Children.Clear();
 
-            foreach (var item in ItemsSource)
-            {
+			ColumnDefinitions.Clear();
+			for (var i = 0; i < ItemsSource.Count; i++)
+			{
+				ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+			}
 
-                var index = Children.Count;
-                var tab = new StackLayout
-                {
-                    Orientation = StackOrientation.Vertical,
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center,
-                    Padding = new Thickness(7),
-                };
-                switch (Device.RuntimePlatform)
-                {
-                    case Device.iOS:
-                        tab.Children.Add(new Image { Source = "pin.png", HeightRequest = 20 });
-                        tab.Children.Add(new Label { Text = "Tab " + (index + 1), FontSize = 11 });
-                        break;
 
-                    case Device.Android:
-                        tab.Children.Add(new Image { Source = "pin.png", HeightRequest = 25 });
-                        break;
-                }
+			foreach (var item in ItemsSource)
+				{
+					var index = Children.Count;
+					var tab = new StackLayout
+					{
+						Orientation = StackOrientation.Vertical,
+						HorizontalOptions = LayoutOptions.CenterAndExpand,
+						VerticalOptions = LayoutOptions.Center,
+						Padding = new Thickness(7),
+					};
+					switch (Device.RuntimePlatform)
+					{
+						case Device.iOS:
+							tab.Children.Add(new Image { Source = "pin.png", HeightRequest = 20 });
+							tab.Children.Add(new Label { Text = "Tab " + (index + 1), FontSize = 11 });
+							break;
 
-                var tgr = new TapGestureRecognizer();
-                tgr.Command = new Command(() =>
-                {
-                    SelectedItem = ItemsSource[index];
-                });
-                tab.GestureRecognizers.Add(tgr);
-                Children.Add(tab, index, 0);
-            }
-        }
+						case Device.Android:
+							tab.Children.Add(new Image { Source = "pin.png", HeightRequest = 25 });
+							break;
+					}
+
+					var tgr = new TapGestureRecognizer();
+					tgr.Command = new Command(() =>
+					{
+						SelectedItem = ItemsSource[index];
+					});
+					tab.GestureRecognizers.Add(tgr);
+					Children.Add(tab, index, 0);
+				}
+		}
 
         public static BindableProperty ItemsSourceProperty =
             BindableProperty.Create(

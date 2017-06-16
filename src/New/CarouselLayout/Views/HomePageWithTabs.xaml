@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+	xmlns="http://xamarin.com/schemas/2014/forms" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+	xmlns:cv="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.CarouselView"
+	xmlns:local="clr-namespace:CarouselLayout"
+	x:Class="CarouselLayout.HomePageWithTabs"
+	Title="Tabs">
+	<ContentPage.Content>
+		
+		<Grid RowSpacing="0" ColumnSpacing="0">
+		
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+				<RowDefinition Height="50" />
+			</Grid.RowDefinitions>
+		
+			<cv:CarouselView x:Name="CarouselItems" Grid.Row="0"
+				ItemsSource="{Binding Items}" ItemSelected="Handle_ItemSelected" Position="{Binding Position}">
+				<cv:CarouselView.ItemTemplate>
+					<DataTemplate>
+						<Grid BackgroundColor="{Binding Background}">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="*" />
+							</Grid.RowDefinitions>
+							
+							<Label Grid.Row="0" Text="{Binding Title}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+						</Grid>
+					</DataTemplate>
+				</cv:CarouselView.ItemTemplate>
+			</cv:CarouselView>
+			
+			<local:PagerIndicatorTabs x:Name="PageIndicator" Grid.Row="1" 
+				HorizontalOptions="FillAndExpand" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+				<local:PagerIndicatorTabs.RowDefinitions>
+					<RowDefinition Height="50" />
+				</local:PagerIndicatorTabs.RowDefinitions>
+				<local:PagerIndicatorTabs.BackgroundColor>
+					<OnPlatform x:TypeArguments="Color">
+						<On Platform="iOS">#2196F3</On>
+						<On Platform="Android">#2196F3</On>
+					</OnPlatform>
+				</local:PagerIndicatorTabs.BackgroundColor>
+			</local:PagerIndicatorTabs>
+			
+		</Grid>
+		
+	</ContentPage.Content>
+</ContentPage>

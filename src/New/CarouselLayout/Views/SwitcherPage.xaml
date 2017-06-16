@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+	x:Class="CarouselLayout.SwitcherPage" Title="Carousel with page indicators">
+	<ContentPage.Content>
+		<StackLayout Orientation="Vertical" Spacing="20" VerticalOptions="Center">
+			<Button Text="No Page Indicators" Command="{Binding NoIndicatorCommand}" />
+			<Button Text="Dots" Command="{Binding DotIndicatorCommand}" />
+			<Button Text="Tabs" Command="{Binding TabIndicatorCommand}" />
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

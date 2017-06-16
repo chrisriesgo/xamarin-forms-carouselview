@@ -17,6 +17,12 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\HomePageWithDots.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\SwitcherPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\HomePageWithTabs.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
@@ -35,6 +41,13 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)PagerIndicatorDots.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PagerIndicatorTabs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\SwitcherPage.xaml.cs">
+      <DependentUpon>SwitcherPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)SwitcherPageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\HomePageWithTabs.xaml.cs">
+      <DependentUpon>HomePageWithTabs.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Views\" />

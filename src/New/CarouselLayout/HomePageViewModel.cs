@@ -18,7 +18,22 @@ namespace CarouselLayout
 		public CarouselItem SelectedItem
 		{
 			get => _selectedItem;
-			set => this.SetProperty<CarouselItem>(ref this._selectedItem, value, nameof(SelectedItem), null);
+			set => this.SetProperty<CarouselItem>(ref this._selectedItem, value, nameof(SelectedItem), 
+			() =>
+			{
+				var index = _items?.IndexOf(_selectedItem) ?? _position;
+				if (index != _position)
+				{
+					Position = index;
+				}
+			});
+		}
+		
+		int _position;
+		public int Position 
+		{
+			get => _position;
+			set => this.SetProperty<int> (ref this._position, value, nameof(Position), null);
 		}
 		
 		public HomePageViewModel()

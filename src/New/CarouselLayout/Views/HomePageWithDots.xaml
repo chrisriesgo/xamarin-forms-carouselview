@@ -4,7 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
 	xmlns:cv="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.CarouselView"
 	xmlns:local="clr-namespace:CarouselLayout"
-	x:Class="CarouselLayout.HomePageWithDots">
+	x:Class="CarouselLayout.HomePageWithDots" Title="Dots">
 	<ContentPage.Content>
 	
 		<RelativeLayout>
