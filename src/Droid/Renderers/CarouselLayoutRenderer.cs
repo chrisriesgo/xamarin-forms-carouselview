@@ -56,6 +56,9 @@ namespace CustomLayouts.Droid.Renderers
 
 			switch (e.Event.Action) {
 				case MotionEventActions.Move:
+                    /* MotionEventActions.Down will not fire if a child element is intercepting the event.
+                       Down has to occur before move so we will ensure that happens. */
+                    OnMotionEventActionsDown();
 					_deltaXResetTimer.Stop ();
 					_deltaX = _scrollView.ScrollX - _prevScrollX;
 					_prevScrollX = _scrollView.ScrollX;
@@ -65,8 +68,8 @@ namespace CustomLayouts.Droid.Renderers
 					_deltaXResetTimer.Start ();
 					break;
 				case MotionEventActions.Down:
-					_motionDown = true;
-					_scrollStopTimer.Stop ();
+                    // Note: This case block will never occur if a child element is consuming the down event.
+                    OnMotionEventActionsDown();
 					break;
 				case MotionEventActions.Up:
 					_motionDown = false;
@@ -76,7 +79,19 @@ namespace CustomLayouts.Droid.Renderers
 			}
 		}
 
-		void UpdateSelectedIndex () {
+        /// <summary>
+        /// If motionDown is set to false set it to true and stop the scroll timer.
+        /// </summary>
+        void OnMotionEventActionsDown()
+        {
+            if (!_motionDown)
+            {
+                _motionDown = true;
+                _scrollStopTimer.Stop();
+            }
+        }
+
+        void UpdateSelectedIndex () {
 			var center = _scrollView.ScrollX + (_scrollView.Width / 2);
 			var carouselLayout = (CarouselLayout)this.Element;
 			carouselLayout.SelectedIndex = (center / _scrollView.Width);
