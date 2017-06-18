@@ -28,7 +28,7 @@ namespace CustomLayouts.iOS.Renderers
 			if (e.OldElement != null) return;
 
 			_native = (UIScrollView)NativeView;
-			_native.Scrolled += NativeScrolled;
+			_native.DecelerationEnded += NativeScrolled;
 			e.NewElement.PropertyChanged += ElementPropertyChanged;
 		}
 
@@ -40,7 +40,7 @@ namespace CustomLayouts.iOS.Renderers
 
 		void ElementPropertyChanged(object sender, PropertyChangedEventArgs e) {
 			if (e.PropertyName == CarouselLayout.SelectedIndexProperty.PropertyName && !Dragging) {
-				ScrollToSelection (false);
+				ScrollToSelection (true);
 			}
 		}
 
@@ -48,18 +48,22 @@ namespace CustomLayouts.iOS.Renderers
 		{
 			if (Element == null) return;
 
-			_native.SetContentOffset (new CoreGraphics.CGPoint 
-				(_native.Bounds.Width * 
-					Math.Max(0, ((CarouselLayout)Element).SelectedIndex), 
-					_native.ContentOffset.Y), 
-				animate);
+			InvokeOnMainThread(() =>
+		    {
+				_native.SetContentOffset (new CoreGraphics.CGPoint 
+					(_native.Bounds.Width * 
+						Math.Max(0, ((CarouselLayout)Element).SelectedIndex), 
+						_native.ContentOffset.Y), 
+					animate);
+			}
 		}
-
+/*
 		public override void Draw(CoreGraphics.CGRect rect)
 		{
 			base.Draw (rect);
 			ScrollToSelection (false);
 		}
+		*/
 	}
 }
 
